@@ -105,7 +105,7 @@ schedule.scheduleJob("* * * * *", () => {
 
 async function updateDrivers() {
     let newDrivers = {}
-    for (let i = 2023; i <= year; i++) {
+    for (let i = 2010; i <= year; i++) {
         console.log(`Scraping F1 ${i} Season...`)
         try {
             await axios.get(`http://ergast.com/api/f1/${i}/driverStandings.json?limit=1000`).then(res => {
