@@ -363,6 +363,12 @@ p a:hover {
     cursor: pointer;
 }
 
+.reload {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+    cursor: pointer;
+}
 .copy {
     display: inline-flex;
     margin-top: 1em;

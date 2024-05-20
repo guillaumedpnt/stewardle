@@ -15,6 +15,7 @@ const victoryCalls = [
     "I Can't Believe It!"
 ]
 
+
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
@@ -253,7 +254,7 @@ async function submit(guess, real, index = 0) {
                 gg.classList.remove("input")
                 gg.classList.add("gg")
                 let greeting = won ? victoryCalls[Math.floor(Math.random() * victoryCalls.length)] : "Bwoah."
-                gg.innerHTML = `<h2>${greeting}</h2><div class="p"><h5>The driver was</h5><h4> ${winner.winner}!</h4></div><div class="share"><div id="share-btn" class="btn"><i class="fa-solid fa-share"></i> Share</div></div><div class="p timer"><h3>Next Stewardle</h3></div><div class="p"><h4 id="time">00:00:00:000</h4></div>`
+                gg.innerHTML = `<h2>${greeting}</h2><div class="p"><h5>The driver was</h5><h4> ${winner.winner}!</h4></div><div class="reload"><div id="reload-btn" class="btn">Reload</div></div><div class="share"><div id="share-btn" class="btn"><i class="fa-solid fa-share"></i> Share</div></div><div class="p timer"><h3>Next Stewardle</h3></div><div class="p"><h4 id="time">00:00:00:000</h4></div>`
                 document.getElementById("share-btn").onmousedown = () => {
                     open(document.getElementById("shareScreen"))
                     if (count) {
@@ -264,6 +265,11 @@ async function submit(guess, real, index = 0) {
                         new CountUp("max", document.getElementById("max").innerText).start()
                         count = false
                     }
+                }
+                document.getElementById("reload-btn").onmousedown = () => {
+                    localStorage.clear()
+                    localStorage.first = false
+                    window.location.href = '/reload';
                 }
                 setTimeout(() => {
                     let attempts = (6 - (Array.from(document.getElementsByClassName("frame")).filter(x => x.childNodes.length === 0).length / 7))

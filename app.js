@@ -105,7 +105,7 @@ schedule.scheduleJob("* * * * *", () => {
 
 async function updateDrivers() {
     let newDrivers = {}
-    for (let i = 2000; i <= year; i++) {
+    for (let i = 2023; i <= year; i++) {
         console.log(`Scraping F1 ${i} Season...`)
         try {
             await axios.get(`http://ergast.com/api/f1/${i}/driverStandings.json?limit=1000`).then(res => {
@@ -202,6 +202,33 @@ function dotd() {
     console.log(drivers[driver])
 }
 
+function new_driver() {
+    console.log("Selecting New Driver...")
+    let date = dayjs().format("YYYY-MM-DD")
+    let pastDrivers = []
+    let pastDates = []
+    if (fs.existsSync(statsPath)) {
+        let statsFile = JSON.parse(fs.readFileSync(statsPath))
+        pastDates = Object.keys(statsFile)
+        pastDrivers = Object.values(statsFile).map(x => x.driver).filter((x) => { return typeof x === "string"})
+    }
+
+    let newDriver = getRandomProperty(drivers)
+    while (pastDrivers.slice(-14).includes(newDriver)) {
+        newDriver = getRandomProperty(drivers)
+    }
+    driver = newDriver
+
+    stats = {
+        "visits": 0,
+        "guesses": 0,
+        "driver": driver
+    }
+    processStats(true)
+    console.log(`New Driver is ${driver}!`)
+    console.log(drivers[driver])
+}
+
 function getRandomProperty(obj) {
     let keys = Object.keys(obj)
     return keys[Math.floor(Math.random() * keys.length)]
@@ -241,6 +268,11 @@ function server() {
     app.get("/", (req, res) => {
         res.render("index")
         stats.visits++
+    })
+
+    app.get("/reload", (req, res) => {
+        new_driver()
+        res.redirect("/")
     })
 
     app.get("/winner", (req, res) => {
